@@ -26,8 +26,8 @@ import controlP5.*;
 int windowWidth = 900;      // set the size of the 
 int windowHeight = 600;     // form
 
-float InScaleMin = -4000;//7500;       // set the Y-Axis Min
-float InScaleMax =  4000;//7500;//1024;    // and Max for both
+float InScaleMin = 100;//7500;       // set the Y-Axis Min
+float InScaleMax =  1100;//7500;//1024;    // and Max for both
 float OutScaleMin = -255;      // the top and 
 float OutScaleMax = 255;    // bottom trends
 
@@ -92,8 +92,8 @@ void setup()
   size(windowWidth , windowHeight);
 
   println(Serial.list());                                           // * Initialize Serial
-//  myPort = new Serial(this, Serial.list()[0], 115200);                //   Communication with
-//  myPort.bufferUntil(10);                                           //   the Arduino
+  myPort = new Serial(this, Serial.list()[0], 115200);                //   Communication with
+  myPort.bufferUntil(10);                                           //   the Arduino
 
   controlP5 = new ControlP5(this);                                  // * Initialize the various
   SPField= controlP5.addTextfield("Setpoint",10,100,60,20);         //   Buttons, Labels, and
@@ -593,15 +593,15 @@ void serialEvent(Serial myPort)
     //Current = map(Current, -5000.0, 5000.0, OutScaleMin, OutScaleMax);
     
     //grn
-    Setpoint = map(float(s[2]), -2000.0, 2000.0, InScaleMin, InScaleMax);
+    Setpoint = map(float(s[2]), -100.0, 1100.0, InScaleMin, InScaleMax); //pid set
     //red
-    Input = map(float(s[3]), 2500.0, 5500.0, InScaleMin, InScaleMax);
+    Input = map(float(s[3]), -1000.0, 1000.0, InScaleMin, InScaleMax); //pid out
     //blu
-    Output = map(float(s[10]), -255.0, 255.0, OutScaleMin, OutScaleMax);
+    Output = map(float(s[10]), -255.0, 255.0, OutScaleMin, OutScaleMax);  //mot cmd
     //cyan
-    Current = map(float(s[1]), -2000.0, 2000.0, OutScaleMin, OutScaleMax);
-    
-    WaveformE = map(float(s[9]), -2000.0, 2000.0, OutScaleMin, OutScaleMax); 
+    Current = map(float(s[1]), -100.0, 1100.0, OutScaleMin, OutScaleMax);  //encpos
+    //dark yel
+    WaveformE = map(float(s[9]), -100.0, 1100.0, OutScaleMin, OutScaleMax); //pid setpoint
     
     SPLabel.setValue(s[1]);           //   where it's needed
     InLabel.setValue(s[2]);           //
